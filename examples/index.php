@@ -1,9 +1,8 @@
 <?php 
 
-require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 
 $config = require 'config.php';
-
 
 use Jump24\FitBit\FitBitAuth;
 
@@ -19,6 +18,7 @@ if ($access_token) {
     //
 
     header("Location: demo.php");
+   
     exit;
 
 }

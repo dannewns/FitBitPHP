@@ -18,7 +18,7 @@ class ValidationTraitTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * tests the is date in the future method and making sure it handles incorrect date formates
+     * tests the is date valid method with an incorrect string which should throw an exception
      * @return [type] [description]
      */
     public function testDateValidWithInvalidStringData()

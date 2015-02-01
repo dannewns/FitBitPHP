@@ -13,7 +13,13 @@ class FitBitBody  extends FitBitBaseApi{
  		parent::__construct($consumer_key, $consumer_secret, $access_token, $access_secret);
  	}
 
- 	public function getBodyMeasurements($user_id = '-', $date)
+ 	/**
+ 	 * returns the body measurements for a user on a particular day, you can either use the current authenticated user or pass in a user id
+ 	 * @param  [type] $date    [description]
+ 	 * @param  string $user_id [description]
+ 	 * @return [type]          [description]
+ 	 */
+ 	public function getBodyMeasurements($date, $user_id = '-')
  	{
 
  		if ($this->isDateValid($date)) {
@@ -22,11 +28,11 @@ class FitBitBody  extends FitBitBaseApi{
 
 	 		$date = $this->convertToCarbon($date);
 	 		
-	 		$profile = $this->get('user/' . $user_id . '/body/date/' . $date->format('Y-m-d') . '.json');
+	 		$body_measurement = $this->get('user/' . $user_id . '/body/date/' . $date->format('Y-m-d') . '.json');
 
-	 		if (!is_null($profile)) {
+	 		if (!is_null($body_measurement)) {
 
-	 			return $profile;
+	 			return $body_measurement;
 	 		
 	 		} 
 
@@ -36,7 +42,33 @@ class FitBitBody  extends FitBitBaseApi{
 
  	}
 
- 	public function getBodyWeightBetweenDateRange($user_id = '-', $start_date, $end_date = null)
+ 	public function getBodyWeightForDate($date, $user_id = '-')
+ 	{
+ 		if ($this->isDateInTheFuture($date)) return NULL;
+
+ 		$start_date =  $this->convertToCarbon($start_date);
+
+ 		$call_url = 'user/' . $user_id . '/body/log/weight/date/' . $start_date->format('Y-m-d');
+
+ 		if (!is_null($end_date)) {
+
+ 			$end_date = $this->convertToCarbon($end_date);
+
+ 			$call_url .= '/';
+ 	
+ 		}
+
+ 		//$urll
+
+ 		return $this->get();
+
+ 		var_dump($body_weight);
+ 		die();
+
+
+ 	}
+
+ 	public function getBodyWeightBetweenDateRange($start_date, $end_date = null, $user_id = '-')
  	{
 
  		if ($this->isDateInTheFuture($start_date)) return NULL;

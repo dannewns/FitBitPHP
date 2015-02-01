@@ -127,9 +127,8 @@ class FitBitBaseApi  {
 		    
 		    }
 
-
 		   	$body = $response->json();
-
+		   	
 		  	return $body;
 		
 		} catch(ServerException $e) {
@@ -151,8 +150,6 @@ class FitBitBaseApi  {
 		} catch (RequestException $e) {
 
 			$this->error = $e->getMessage();
-
-			//$this->setResponseValues($e->getResponse());
 			
 			return NULL;
 		
