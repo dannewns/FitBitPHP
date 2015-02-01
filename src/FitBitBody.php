@@ -42,11 +42,6 @@ class FitBitBody  extends FitBitBaseApi{
 
  	}
 
- 	
-	#GET /<api-version>/user/-/body/log/weight/date/<date>.<response-format> 
-	#GET /<api-version>/user/-/body/log/weight/date/<base-date>/<period>.<response-format>
-	#GET /<api-version>/user/-/body/log/weight/date/<base-date>/<end-date>.<response-format>
-
  	/**
  	 * returns the body weight for the current authorized user
  	 * @param  string $date the date to get weights for
@@ -107,6 +102,12 @@ class FitBitBody  extends FitBitBaseApi{
 
  	}
 
+ 	/**
+ 	 * pulls back the users body weight from a date with a set period
+ 	 * @param  [type] $date   [description]
+ 	 * @param  string $period [description]
+ 	 * @return [type]         [description]
+ 	 */
  	public function getBodyWeightForPeriod($date, $period = '1w')
  	{
  		if (!$this->isDateValid($date) ) return NULL;
