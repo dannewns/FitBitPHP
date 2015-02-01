@@ -141,5 +141,29 @@ class FitBitBodyTest extends PHPUnit_Framework_TestCase {
       	$this->assertArrayHasKey('body', $body);
 
     }
+
+    /**
+     * tests to see if the correct exception is thrown when a invalid user id is thrown in
+     * @return [type] [description]
+     */
+    public function testGetBodyMeasurementsWithUnAuthorisedUserId()
+    {
+    	$mock_response =  new Response(401);
+
+     	$mockResponseBody = Stream::factory(fopen(__DIR__ . '/files/unauthorized_user_body_measurement.json', 'r+'));
+
+      	$mock_response->setBody($mockResponseBody);
+    
+      	$mock = new Mock([ $mock_response ]);
+
+      	$fitbit_body = new FitBitBody('tester1', 'tester2', 'token_tester', 'secret_tester');
+
+      	$fitbit_body->setupMockDataForRequest($mock);
+
+      	$body = $fitbit_body->getBodyMeasurements('2014-01-28', '234KZC');
+
+      	$this->assertArrayHasKey('body', $body);
+
+    }
  
 }

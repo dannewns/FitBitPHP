@@ -90,7 +90,7 @@ class FitBitBaseApi  {
  	 * @param  array 	$query_parameters the query string parameters to pass into the call
  	 * @return 			the result from the call be it the details for a cube or NULL when nothing found
  	 */
- 	protected function get($url, $query_parameters = array(), $dump_data = false)
+ 	protected function get($url, $query_parameters = array(), $dump_data = true)
  	{
 
  		try {	
@@ -142,6 +142,16 @@ class FitBitBaseApi  {
 			return NULL;
 
 		} catch(ClientException $e) {
+
+
+		    	$body = $e->getResponse()->getBody();
+
+		    	echo $body;
+
+		    	echo $e->getCode();
+
+		    	die();
+		    
 
 			$message = $this->getErrorMessageFromResponseBody($e->getResponse()->json());
 
