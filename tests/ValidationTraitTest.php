@@ -16,6 +16,32 @@ class ValidationTraitTest extends PHPUnit_Framework_TestCase {
     {
 
     }
+
+    /**
+     * tests the is date in the future method and making sure it handles incorrect date formates
+     * @return [type] [description]
+     */
+    public function testDateValidWithInvalidStringData()
+    {
+
+        $this->setExpectedException('Jump24\FitBit\Exception\InvalidDateFormatException');
+
+        $result = $this->isDateValid('asdsad');
+
+    }
+
+    /**
+     * tests the is date in the future method and making sure it handles incorrect date formates
+     * @return [type] [description]
+     */
+    public function testDateValidWithValidDate()
+    {
+
+        $result = $this->isDateValid('2014-01-01');
+
+        $this->assertTrue($result);
+
+    }
   
     /**
      * tests that the validation traits is the date in the future method returns the correct response when a date is in the future
@@ -45,19 +71,7 @@ class ValidationTraitTest extends PHPUnit_Framework_TestCase {
    
     }
 
-    /**
-     * tests the is date in the future method and making sure it handles incorrect date formates
-     * @return [type] [description]
-     */
-    public function testIncorrrectDateFormattingValidation()
-    {
-    	$date = Carbon::now()->subDays(2);
-
-        $this->setExpectedException('Jump24\FitBit\Exception\InvalidDateFormatException');
-
-    	$result = $this->isDateValid($date->format('d-m-Y'));
-
-    }
+    
 
     /**
      * tests the is end date after start date function with correct dates
@@ -88,6 +102,7 @@ class ValidationTraitTest extends PHPUnit_Framework_TestCase {
         $result = $this->isEndDateAfterStartDate($start_date->format('Y-m-d'), $end_date->format('Y-m-d'));
 
         $this->assertFalse($result);
+    
     }
  
 }

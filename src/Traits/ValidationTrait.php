@@ -17,10 +17,12 @@ trait ValidationTrait {
 		try {
 
 			$date = Carbon::createFromFormat('Y-m-d', $date);
+
+			return isset($date);
 		
 		} catch (\InvalidArgumentException $e) {
 
-			throw new InvalidDateFormatException('The date format you have used is invalid');
+			throw new InvalidDateFormatException('The date format you have used is invalid', $e->getCode());
 
 		}
 
