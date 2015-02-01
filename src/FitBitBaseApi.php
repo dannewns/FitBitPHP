@@ -35,17 +35,35 @@ class FitBitBaseApi  {
 
   	private $reason = NULL;
 
- 	public function __construct($consumer_key, $consumer_secret, $access_token, $access_token_secrect)
+  	protected $consumer_key;
+
+  	protected $consumer_secret;
+
+  	protected $access_token;
+
+  	protected $access_token_secret;
+
+
+ 	public function __construct($consumer_key, $consumer_secret)
  	{
 
  		$this->consumer_key = $consumer_key;
 
  		$this->consumer_secret = $consumer_secret;
 
+ 	
+ 	}
+
+ 	/**
+ 	 * sets up the access token for the user who is going to be making the request
+ 	 * @param [type] $access_token        [description]
+ 	 * @param [type] $access_token_secret [description]
+ 	 */
+ 	public function setAccessCredentials($access_token, $access_token_secret)
+ 	{
  		$this->access_token = $access_token;
 
- 		$this->access_token_secrect = $access_token_secrect;
- 	
+ 		$this->access_token_secret = $access_token_secret;
  	}
 
  	/**
@@ -90,7 +108,7 @@ class FitBitBaseApi  {
  	 * @param  array 	$query_parameters the query string parameters to pass into the call
  	 * @return 			the result from the call be it the details for a cube or NULL when nothing found
  	 */
- 	protected function get($url, $query_parameters = array(), $dump_data = true)
+ 	protected function get($url, $query_parameters = array(), $dump_data = false)
  	{
 
  		try {	
@@ -142,16 +160,6 @@ class FitBitBaseApi  {
 			return NULL;
 
 		} catch(ClientException $e) {
-
-
-		    	$body = $e->getResponse()->getBody();
-
-		    	echo $body;
-
-		    	echo $e->getCode();
-
-		    	die();
-		    
 
 			$message = $this->getErrorMessageFromResponseBody($e->getResponse()->json());
 
@@ -228,7 +236,7 @@ class FitBitBaseApi  {
 			    'consumer_key'    => $this->consumer_key,
 			    'consumer_secret' => $this->consumer_secret,
 			    'token'           => $this->access_token,
-			    'token_secret'    => $this->access_token_secrect
+			    'token_secret'    => $this->access_token_secret
 			]);
 
  		$this->client = new Client( array(	'base_url' => $this->route . $this->version, 
@@ -242,6 +250,7 @@ class FitBitBaseApi  {
  		} 
 
 		$this->client->getEmitter()->attach($oauth);
+ 	
  	}
 
 }

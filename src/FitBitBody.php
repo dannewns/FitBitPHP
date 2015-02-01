@@ -8,9 +8,9 @@ class FitBitBody  extends FitBitBaseApi{
 
 	use ValidationTrait;
 
- 	public function __construct($consumer_key, $consumer_secret, $access_token, $access_secret)
+ 	public function __construct($consumer_key, $consumer_secret)
  	{
- 		parent::__construct($consumer_key, $consumer_secret, $access_token, $access_secret);
+ 		parent::__construct($consumer_key, $consumer_secret);
  	}
 
  	/**
@@ -42,33 +42,43 @@ class FitBitBody  extends FitBitBaseApi{
 
  	}
 
- 	public function getBodyWeightForDate($date, $user_id = '-')
+ 	
+	#GET /<api-version>/user/-/body/log/weight/date/<date>.<response-format> 
+	#GET /<api-version>/user/-/body/log/weight/date/<base-date>/<period>.<response-format>
+	#GET /<api-version>/user/-/body/log/weight/date/<base-date>/<end-date>.<response-format>
+
+ 	/**
+ 	 * returns the body weight for the current authorized user
+ 	 * @param  string $date the date to get weights for
+ 	 * @return [type]       [description]
+ 	 */
+ 	public function getBodyWeightForDate($date)
  	{
  		if ($this->isDateInTheFuture($date)) return NULL;
 
- 		$start_date =  $this->convertToCarbon($start_date);
+ 		$date =  $this->convertToCarbon($date);
 
- 		$call_url = 'user/' . $user_id . '/body/log/weight/date/' . $start_date->format('Y-m-d');
+ 		$call_url = 'user/-/body/log/weight/date/' . $date->format('Y-m-d') . '.json';
 
- 		if (!is_null($end_date)) {
+ 		$body_weight = $this->get($call_url);
 
- 			$end_date = $this->convertToCarbon($end_date);
+ 		if (!is_null($body_weight)) {
 
- 			$call_url .= '/';
- 	
- 		}
+ 			return $body_weight;
+ 		
+ 		} 
 
- 		//$urll
-
- 		return $this->get();
-
- 		var_dump($body_weight);
- 		die();
-
+ 		return NULL;
 
  	}
 
- 	public function getBodyWeightBetweenDateRange($start_date, $end_date = null, $user_id = '-')
+ 	/**
+ 	 * returns the body weight readings for a date range with start and end date passed in
+ 	 * @param  [type] $start_date [description]
+ 	 * @param  [type] $end_date   [description]
+ 	 * @return [type]             [description]
+ 	 */
+ 	public function getBodyWeightBetweenDateRange($start_date, $end_date)
  	{
 
  		if ($this->isDateInTheFuture($start_date)) return NULL;
@@ -98,6 +108,7 @@ class FitBitBody  extends FitBitBaseApi{
 
  	}
 
+ 
 
  	public function getBodyFat()
  	{

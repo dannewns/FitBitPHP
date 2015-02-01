@@ -33,7 +33,9 @@ class FitBitBodyTest extends PHPUnit_Framework_TestCase {
     
       	$mock = new Mock([ $mock_response ]);
 
-      	$fitbit_body = new FitBitBody('tester1', 'tester2', 'token_tester', 'secret_tester');
+      	$fitbit_body = new FitBitBody('tester1', 'tester2');
+
+      	$fitbit_body->setAccessCredentials('token_tester', 'secret_tester');
 
       	$fitbit_body->setupMockDataForRequest($mock);
 
@@ -58,7 +60,9 @@ class FitBitBodyTest extends PHPUnit_Framework_TestCase {
     
       	$mock = new Mock([ $mock_response ]);
 
-      	$fitbit_body = new FitBitBody('tester1', 'tester2', 'token_tester', 'secret_tester');
+      	$fitbit_body = new FitBitBody('tester1', 'tester2');
+
+      	$fitbit_body->setAccessCredentials('token_tester', 'secret_tester');
 
       	$fitbit_body->setupMockDataForRequest($mock);
 
@@ -83,7 +87,9 @@ class FitBitBodyTest extends PHPUnit_Framework_TestCase {
     
       	$mock = new Mock([ $mock_response ]);
 
-      	$fitbit_body = new FitBitBody('tester1', 'tester2', 'token_tester', 'secret_tester');
+      	$fitbit_body = new FitBitBody('tester1', 'tester2', 'token_tester');
+
+      	$fitbit_body->setAccessCredentials('token_tester', 'secret_tester');
 
       	$fitbit_body->setupMockDataForRequest($mock);
 
@@ -108,7 +114,9 @@ class FitBitBodyTest extends PHPUnit_Framework_TestCase {
     
       	$mock = new Mock([ $mock_response ]);
 
-      	$fitbit_body = new FitBitBody('tester1', 'tester2', 'token_tester', 'secret_tester');
+      	$fitbit_body = new FitBitBody('tester1', 'tester2');
+
+      	$fitbit_body->setAccessCredentials('token_tester', 'secret_tester');
 
       	$fitbit_body->setupMockDataForRequest($mock);
 
@@ -132,7 +140,9 @@ class FitBitBodyTest extends PHPUnit_Framework_TestCase {
     
       	$mock = new Mock([ $mock_response ]);
 
-      	$fitbit_body = new FitBitBody('tester1', 'tester2', 'token_tester', 'secret_tester');
+      	$fitbit_body = new FitBitBody('tester1', 'tester2');
+
+      	$fitbit_body->setAccessCredentials('token_tester', 'secret_tester');
 
       	$fitbit_body->setupMockDataForRequest($mock);
 
@@ -156,13 +166,41 @@ class FitBitBodyTest extends PHPUnit_Framework_TestCase {
     
       	$mock = new Mock([ $mock_response ]);
 
-      	$fitbit_body = new FitBitBody('tester1', 'tester2', 'token_tester', 'secret_tester');
+      	$fitbit_body = new FitBitBody('tester1', 'tester2');
+
+      	$fitbit_body->setAccessCredentials('token_tester', 'secret_tester');
 
       	$fitbit_body->setupMockDataForRequest($mock);
 
+      	$this->setExpectedException('Jump24\FitBit\Exception\UnauthorizedAPIAccessException');
+
       	$body = $fitbit_body->getBodyMeasurements('2014-01-28', '234KZC');
 
-      	$this->assertArrayHasKey('body', $body);
+    }
+
+    /**
+     * tests that correct exception is thrown when body weight is called for in the future
+     * @return [type] [description]
+     */
+    public function testGetBodyWeightWithDateInFuture()
+    {
+    	$mock_response =  new Response(200);
+
+     	$mockResponseBody = Stream::factory(fopen(__DIR__ . '/files/body_measurement.json', 'r+'));
+
+      	$mock_response->setBody($mockResponseBody);
+    
+      	$mock = new Mock([ $mock_response ]);
+
+      	$fitbit_body = new FitBitBody('tester1', 'tester2');
+
+      	$fitbit_body->setAccessCredentials('token_tester', 'secret_tester');
+
+      	$fitbit_body->setupMockDataForRequest($mock);
+
+      	$body = $fitbit_body->getBodyWeightForDate('2015-02-02');
+
+      	$this->assertNull($body);
 
     }
  
