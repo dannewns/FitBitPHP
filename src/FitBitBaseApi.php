@@ -8,6 +8,8 @@ use GuzzleHttp\Subscriber\Oauth\Oauth1;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
+use Jump24\FitBit\Exception\UnauthorizedAPIAccessException;
+use Jump24\FitBit\Exception\BadAPIRequestException;
 
 class FitBitBaseApi  {
 
@@ -128,7 +130,7 @@ class FitBitBaseApi  {
 		    }
 
 		   	$body = $response->json();
-		   	
+
 		  	return $body;
 		
 		} catch(ServerException $e) {
@@ -141,11 +143,23 @@ class FitBitBaseApi  {
 
 		} catch(ClientException $e) {
 
-			$this->error = $e->getMessage();
+			$message = $this->getErrorMessageFromResponseBody($e->getResponse()->json());
 
-			$this->setResponseValues($e->getResponse());
+			switch($e->getCode()) {
 
-			return NULL;
+				case 400:
+					
+					throw new BadAPIRequestException($message, $e->getCode());
+				
+				break;
+				case 401:
+				
+					throw new UnauthorizedAPIAccessException($message, $e->getCode());
+				
+				break;
+			
+			}
+
 
 		} catch (RequestException $e) {
 
@@ -170,6 +184,27 @@ class FitBitBaseApi  {
 
 		$this->called_url = $response->getEffectiveUrl();
  	
+ 	}
+
+ 	/**
+ 	 * retrieves the error message from the response
+ 	 * @param  [type] $body [description]
+ 	 * @return [type]       [description]
+ 	 */
+ 	private function getErrorMessageFromResponseBody($body)
+ 	{
+
+		$message = false;
+
+		if (array_key_exists('errors', $body)) {
+
+			$error = array_shift($body['errors']);
+
+			$message = $error['message'];
+
+		}
+
+		return $message;
  	}
 
  	/**

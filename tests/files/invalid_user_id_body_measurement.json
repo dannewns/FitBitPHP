@@ -1,0 +1,1 @@
+{"errors":[{"errorType":"validation","fieldName":"resource owner","message":"Ghost user! Please, provide valid user id in the resource path. Received: asdas"}],"success":false}
