@@ -65,6 +65,33 @@ class FitBitBodyTest extends PHPUnit_Framework_TestCase {
       	$body = $fitbit_body->getBodyMeasurements('2017-01-28');
 
    		$this->assertNull($body);
+    
+    }
+
+    /**
+     * testing getBodyMeasurement using a invalid date format
+     * @return [type] [description]
+     */
+    public function testGetBodyMeasurementsWithInvalidDateFormat()
+    {
+
+    	$mock_response =  new Response(200);
+
+     	$mockResponseBody = Stream::factory(fopen(__DIR__ . '/files/body_measurement.json', 'r+'));
+
+      	$mock_response->setBody($mockResponseBody);
+    
+      	$mock = new Mock([ $mock_response ]);
+
+      	$fitbit_body = new FitBitBody('tester1', 'tester2', 'token_tester', 'secret_tester');
+
+      	$fitbit_body->setupMockDataForRequest($mock);
+
+      	$this->setExpectedException('Jump24\FitBit\Exception\InvalidDateFormatException');
+
+      	$body = $fitbit_body->getBodyMeasurements('asdasda');
+
+    
     }
  
 }
