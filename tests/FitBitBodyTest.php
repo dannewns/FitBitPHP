@@ -250,9 +250,35 @@ class FitBitBodyTest extends PHPUnit_Framework_TestCase {
 
       	$fitbit_body->setupMockDataForRequest($mock);
 
-      	$body = $fitbit_body->getBodyWeightForDate('2014-01-31', '2015-02-01');
+      	$body = $fitbit_body->getBodyWeightBetweenDateRange('2015-01-31', '2015-02-01');
 
       	$this->assertArrayHasKey('weight', $body);
+
+    }
+
+      /**
+     * tests that correct exception is thrown when body weight is called for in the future
+     * @return [type] [description]
+     */
+    public function testGetBodyWeightBetweenRangeWithEndBeforeStartDate()
+    {
+    	$mock_response =  new Response(200);
+
+     	$mockResponseBody = Stream::factory(fopen(__DIR__ . '/files/valid_body_weight.json', 'r+'));
+
+      	$mock_response->setBody($mockResponseBody);
+    
+      	$mock = new Mock([ $mock_response ]);
+
+      	$fitbit_body = new FitBitBody('tester1', 'tester2');
+
+      	$fitbit_body->setAccessCredentials('token_tester', 'secret_tester');
+
+      	$fitbit_body->setupMockDataForRequest($mock);
+
+      	$body = $fitbit_body->getBodyWeightBetweenDateRange( '2015-02-01', '2015-01-31');
+
+      	$this->assertNull($body);
 
     }
  

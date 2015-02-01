@@ -68,4 +68,16 @@ trait ValidationTrait {
  		
 	}
 
+	/**
+	 * validates that the period past to it is valid
+	 * @param  [type]  $period [description]
+	 * @return boolean         [description]
+	 */
+	public function isValidPeriodFormat($period)
+	{
+		
+		if (in_array($period, ['1d', '7d', '30d', '1w', '1m'])) return true;
+
+		return false;
+	}
 }

@@ -88,7 +88,7 @@ class FitBitBody  extends FitBitBaseApi{
  		if ($this->isDateInTheFuture($start_date) || $this->isDateInTheFuture($end_date)) return NULL;
 
  		if (!$this->isEndDateAfterStartDate($start_date, $end_date)) return NULL;
- 		
+
  		$start_date =  $this->convertToCarbon($start_date);
 
  		$end_date = $this->convertToCarbon($end_date);
@@ -109,7 +109,25 @@ class FitBitBody  extends FitBitBaseApi{
 
  	public function getBodyWeightForPeriod($date, $period = '1w')
  	{
+ 		if (!$this->isDateValid($date) ) return NULL;
 
+ 		if ($this->isDateInTheFuture($date)) return NULL;
+
+ 		if (!$this->isValidPeriodFormat($period)) return NULL;
+ 		
+ 		$date =  $this->convertToCarbon($date);
+
+ 		$call_url = 'user/-/body/log/weight/date/' . $date->format('Y-m-d') . '/' . $period . '.json';
+
+ 		$body_weights = $this->get($call_url);
+
+ 		if (!is_null($body_weights)) {
+
+ 			return $body_weights;
+ 		
+ 		} 
+
+ 		return NULL;
  	}
 
  

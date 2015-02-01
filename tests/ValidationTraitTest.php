@@ -105,4 +105,32 @@ class ValidationTraitTest extends PHPUnit_Framework_TestCase {
     
     }
  
+    /**
+     * testing is valid period format with a valid period
+     * @return [type] [description]
+     */
+    public function testIsValidPeriodFormatWithValidPeriod()
+    {
+        $period = '1d';
+
+        $result = $this->isValidPeriodFormat($period);
+
+        $this->assertTrue($result);
+
+    }
+
+    /**
+     * testing with invalid period format passed in
+     * @return [type] [description]
+     */
+    public function testIsValidPeriodFormatWithInValidPeriod()
+    {
+        $period = '1ss';
+
+        $result = $this->isValidPeriodFormat($period);
+
+        $this->assertFalse($result);
+
+    }
+
 }
