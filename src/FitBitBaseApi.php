@@ -21,10 +21,6 @@ class FitBitBaseApi  {
 
   	protected $client;
 
-  	protected $start_date;
-
-  	protected $end_date;
-
   	private $mock = NULL;
 
   	private $error = NULL;
@@ -42,6 +38,8 @@ class FitBitBaseApi  {
   	protected $access_token;
 
   	protected $access_token_secret;
+
+  	protected $dump_data = false;
 
 
  	public function __construct($consumer_key, $consumer_secret)
@@ -101,6 +99,11 @@ class FitBitBaseApi  {
 
  	}
 
+ 	public function dumpCallData()
+ 	{
+ 		$this->dump_data = true;
+ 	}
+
 
  	/**
  	 * wrapper method to call the api by just suppling a api endpoint url 
@@ -108,7 +111,7 @@ class FitBitBaseApi  {
  	 * @param  array 	$query_parameters the query string parameters to pass into the call
  	 * @return 			the result from the call be it the details for a cube or NULL when nothing found
  	 */
- 	protected function get($url, $query_parameters = array(), $dump_data = false)
+ 	protected function get($url, $query_parameters = array())
  	{
 
  		try {	
@@ -137,7 +140,9 @@ class FitBitBaseApi  {
 		    
 		    }
 
-		    if ($dump_data) {
+		    if ($this->dump_data) {
+
+		    	$this->dump_data = false;
 
 		    	$body = $response->getBody();
 

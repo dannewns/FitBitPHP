@@ -10,7 +10,9 @@ $body = new FitBitBody($config['consumer_key'], $config['consumer_secret']);
 
 $body->setAccessCredentials($_SESSION['token'], $_SESSION['secret']);
 
-$measurements = $body->getBodyWeightForDate('2015-02-01');
+$body->dumpCallData();
+
+$measurements = $body->getBodyWeightBetweenDateRange('2015-02-01', '2015-02-01');
 
 print_r($measurements);
 

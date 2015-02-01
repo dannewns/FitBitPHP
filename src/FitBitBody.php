@@ -54,6 +54,9 @@ class FitBitBody  extends FitBitBaseApi{
  	 */
  	public function getBodyWeightForDate($date)
  	{
+
+ 		if (!$this->isDateValid($date)) return NULL;
+
  		if ($this->isDateInTheFuture($date)) return NULL;
 
  		$date =  $this->convertToCarbon($date);
@@ -80,31 +83,32 @@ class FitBitBody  extends FitBitBaseApi{
  	 */
  	public function getBodyWeightBetweenDateRange($start_date, $end_date)
  	{
+ 		if (!$this->isDateValid($start_date) || !$this->isDateValid($end_date)) return NULL;
 
- 		if ($this->isDateInTheFuture($start_date)) return NULL;
+ 		if ($this->isDateInTheFuture($start_date) || $this->isDateInTheFuture($end_date)) return NULL;
 
- 		if (!is_null($end_date) && $this->isDateInTheFuture($end_date)) return NULL;
-
- 		if (!is_null($end_date) && $this->isEndDateAfterStartDate($start_date, $end_date)) return NULL;
-
+ 		if (!$this->isEndDateAfterStartDate($start_date, $end_date)) return NULL;
+ 		
  		$start_date =  $this->convertToCarbon($start_date);
 
- 		$call_url = 'user/' . $user_id . '/body/log/weight/date/' . $start_date->format('Y-m-d');
+ 		$end_date = $this->convertToCarbon($end_date);
 
- 		if (!is_null($end_date)) {
+ 		$call_url = 'user/-/body/log/weight/date/' . $start_date->format('Y-m-d') . '/' . $end_date->format('Y-m-d') . '.json';
 
- 			$end_date = $this->convertToCarbon($end_date);
+ 		$body_weights = $this->get($call_url);
 
- 			$call_url .= '/';
- 	
- 		}
+ 		if (!is_null($body_weights)) {
 
- 		//$urll
+ 			return $body_weights;
+ 		
+ 		} 
 
- 		return $this->get();
+ 		return NULL;
 
- 		var_dump($body_weight);
- 		die();
+ 	}
+
+ 	public function getBodyWeightForPeriod($date, $period = '1w')
+ 	{
 
  	}
 

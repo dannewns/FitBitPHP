@@ -57,7 +57,7 @@ trait ValidationTrait {
 
 		$difference = $start_date->diffInDays($end_date, false);
     
- 		if ($difference  > 0)
+ 		if ($difference  >= 0)
 
  			return true;
 
