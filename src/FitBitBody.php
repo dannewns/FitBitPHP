@@ -220,15 +220,44 @@ class FitBitBody  extends FitBitBaseApi{
  		return NULL;
  	}
 
+ 	/**
+ 	 * pulls back the weight goal for a authenticated user
+ 	 * @return [type] [description]
+ 	 */
  	public function getBodyWeightGoal()
  	{
 
+ 		$call_url = 'user/-/body/log/weight/goal.json';
+
+ 		$weight_goal = $this->get($call_url);
+
+ 		if (!is_null($weight_goal)) {
+
+ 			return $weight_goal;
+ 		
+ 		} 
+
+ 		return NULL;
+ 		
  	}
 
-
+ 	/**
+ 	 * returns the body fat goal for a authenticated user
+ 	 * @return [type] [description]
+ 	 */
  	public function getBodyFatGoal()
  	{
+ 		$call_url = 'user/-/body/log/fat/goal.json';
 
+ 		$fat_goal = $this->get($call_url);
+
+ 		if (!is_null($fat_goal)) {
+
+ 			return $fat_goal;
+ 		
+ 		} 
+
+ 		return NULL;
  	}
 
 }
