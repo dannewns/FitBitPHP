@@ -179,11 +179,41 @@ class FitBitBody  extends FitBitBaseApi{
 
  		$call_url = 'user/-/body/log/fat/date/' . $start_date->format('Y-m-d') . '/' . $end_date->format('Y-m-d') . '.json';
 
- 		$body_weights = $this->get($call_url);
+ 		$body_fat = $this->get($call_url);
 
- 		if (!is_null($body_weights)) {
+ 		if (!is_null($body_fat)) {
 
- 			return $body_weights;
+ 			return $body_fat;
+ 		
+ 		} 
+
+ 		return NULL;
+
+ 	}
+
+ 	/**
+ 	 * pulls back the body fat for a authenticated between a date period
+ 	 * @param  string $date   the date to end on
+ 	 * @param  string $period the period to pull data back from
+ 	 * @return 
+ 	 */
+ 	public function getBodyFatForPeriod($date, $period = '1w')
+ 	{
+ 		if (!$this->isDateValid($date) ) return NULL;
+
+ 		if ($this->isDateInTheFuture($date)) return NULL;
+
+ 		if (!$this->isValidPeriodFormat($period)) return NULL;
+ 		
+ 		$date =  $this->convertToCarbon($date);
+
+ 		$call_url = 'user/-/body/log/fat/date/' . $date->format('Y-m-d') . '/' . $period . '.json';
+
+ 		$body_fat = $this->get($call_url);
+
+ 		if (!is_null($body_fat)) {
+
+ 			return $body_fat;
  		
  		} 
 
