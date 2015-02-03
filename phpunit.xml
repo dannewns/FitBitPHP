@@ -7,10 +7,10 @@
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
          processIsolation="false"
-         stopOnFailure="false"
+         stopOnFailure="true"
          syntaxCheck="false">
     <testsuites>
-        <testsuite name="CubeSensors Test Suite">
+        <testsuite name="FitBit Test Suite">
             <directory suffix=".php">./tests/</directory>
         </testsuite>
     </testsuites>
