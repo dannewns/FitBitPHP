@@ -12,7 +12,7 @@ $body->setAccessCredentials($_SESSION['token'], $_SESSION['secret']);
 
 $body->dumpCallData();
 
-$measurements = $body->getBodyWeightForPeriod('2015-02-01', '1w');
+$measurements = $body->getBodyFatBetweenDateRange('2014-12-31', '2015-01-30');
 
 print_r($measurements);
 

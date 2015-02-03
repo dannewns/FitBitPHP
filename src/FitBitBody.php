@@ -132,10 +132,62 @@ class FitBitBody  extends FitBitBaseApi{
  	}
 
  
-
- 	public function getBodyFat()
+ 	/**
+ 	 * pulls back the body fat of a user for a particular day
+ 	 * @param  [type] $date [description]
+ 	 * @return [type]       [description]
+ 	 */
+ 	public function getBodyFatForDate($date)
  	{
+ 		if (!$this->isDateValid($date)) return NULL;
 
+ 		if ($this->isDateInTheFuture($date)) return NULL;
+
+ 		$date =  $this->convertToCarbon($date);
+
+ 		$call_url = 'user/-/body/log/fat/date/' . $date->format('Y-m-d') . '.json';
+
+ 		$body_fat = $this->get($call_url);
+
+ 		if (!is_null($body_fat)) {
+
+ 			return $body_fat;
+ 		
+ 		} 
+
+ 		return NULL;
+
+ 	}
+
+ 	/**
+ 	 * pulls back the body for for a user between a date range
+ 	 * @param  [type] $start_date [description]
+ 	 * @param  [type] $end_date   [description]
+ 	 * @return [type]             [description]
+ 	 */
+ 	public function getBodyFatBetweenDateRange($start_date, $end_date)
+ 	{
+ 		if (!$this->isDateValid($start_date) || !$this->isDateValid($end_date)) return NULL;
+
+ 		if ($this->isDateInTheFuture($start_date) || $this->isDateInTheFuture($end_date)) return NULL;
+
+ 		if (!$this->isEndDateAfterStartDate($start_date, $end_date)) return NULL;
+
+ 		$start_date =  $this->convertToCarbon($start_date);
+
+ 		$end_date = $this->convertToCarbon($end_date);
+
+ 		$call_url = 'user/-/body/log/fat/date/' . $start_date->format('Y-m-d') . '/' . $end_date->format('Y-m-d') . '.json';
+
+ 		$body_weights = $this->get($call_url);
+
+ 		if (!is_null($body_weights)) {
+
+ 			return $body_weights;
+ 		
+ 		} 
+
+ 		return NULL;
  	}
 
  	public function getBodyWeightGoal()
