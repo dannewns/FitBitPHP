@@ -1,5 +1,18 @@
 {
+    "name": "jump24/fitbit",
+    "description": "FitBit API wrapper",
+    "keywords" : ["fitbit", "API"],
+    "license": "MIT",
+    "version": "0.1.0",
+    "authors": [
+        {
+            "name": "Daniel Newns",
+            "email": "dan@jump24.co.uk",
+            "homepage" : "http://www.jump24.co.uk",
+            "role"  : "Developer"
 
+        }
+    ],
     "minimum-stability": "dev",
     "require": {
         "php": ">=5.4.0",

@@ -17,6 +17,9 @@ if ($access_token) {
     $_SESSION['secret'] = $access_token->value['oauth_token_secret'];
     //
 
+    var_dump($access_token);
+    die();
+    
     header("Location: demo.php");
    
     exit;

@@ -98,9 +98,9 @@ class FitBitBodyTest extends PHPUnit_Framework_TestCase {
 
       	$fitbit_body->setupMockDataForRequest($mock);
 
-      	$this->setExpectedException('Jump24\FitBit\Exception\InvalidDateFormatException');
-
       	$body = $fitbit_body->getBodyMeasurements('asdasda');
+
+        $this->assertNull($body);
 
     
     }

@@ -7,6 +7,8 @@ use Jump24\FitBit\Exception\InvalidDateFormatException;
 
 trait ValidationTrait {
 
+	public $validation_error = NULL;
+
 	/**
 	 * checks to see if the date is a valid format
 	 * @param  [type]  $date [description]
@@ -22,7 +24,9 @@ trait ValidationTrait {
 		
 		} catch (\InvalidArgumentException $e) {
 
-			throw new InvalidDateFormatException('The date format you have used is invalid', $e->getCode());
+			$this->validation_error = 'The date you have supplied is in a invalid format';
+
+			return false;
 
 		}
 
@@ -38,7 +42,13 @@ trait ValidationTrait {
 	
 		$date = Carbon::createFromFormat('Y-m-d', $date);
 
-		return $date->isFuture();
+		if ($date->isFuture()) {
+
+			return true;
+		
+		} 
+
+		return false;
 	
 	}
 
@@ -78,6 +88,14 @@ trait ValidationTrait {
 		
 		if (in_array($period, ['1d', '7d', '30d', '1w', '1m'])) return true;
 
-		return false;
+		else {
+
+			$this->validation_error = 'The period you have supplied is not valid';
+		
+			return false;
+
+		}
+
 	}
+
 }

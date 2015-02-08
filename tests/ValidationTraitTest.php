@@ -24,9 +24,9 @@ class ValidationTraitTest extends PHPUnit_Framework_TestCase {
     public function testDateValidWithInvalidStringData()
     {
 
-        $this->setExpectedException('Jump24\FitBit\Exception\InvalidDateFormatException');
-
         $result = $this->isDateValid('asdsad');
+
+        $this->assertFalse($result);
 
     }
 
